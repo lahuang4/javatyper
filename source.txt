@@ -1,0 +1,120 @@
+package com.java.utils.external.bean.module;
+
+import com.java.utils.lib.bean.module.BeanModuleInstance;
+import com.java.utils.lib.bean.module.BeanModuleInstanceFactoryInterface;
+import com.java.utils.lib.bean.module.BeanModuleInstanceOptions;
+import com.java.utils.lib.bean.module.BeanModuleInstanceOptionsFactory;
+
+public class ExternalBeanModuleInstanceFactory extends AbstractExternalBeanModuleInstanceFactory implements BeanModuleInstanceFactoryInterface {
+
+  private ExternalBeanModuleInstanceOptionsFactory beanModuleInstanceOptionsFactory;
+  private ExternalBeanModuleInstanceOptions beanModuleInstanceOptions;
+
+  ExternalBeanModuleInstanceFactory(ExternalBeanModuleInstanceOptionsFactory factory) {
+    beanModuleInstanceOptionsFactory = factory;
+    beanModuleInstanceOptions = factory.createExternalBeanModuleInstanceOptions();
+  }
+
+  /**
+   * Creates a builder for creating ExternalBeanModuleInstanceFactorys.
+   *
+   * @return a new ExternalBeanModuleInstanceFactoryBuilder.
+   */
+  public static Builder newBuilder() {
+    return new Builder();
+  }
+
+  /**
+   * DEPRECATED. Use {@link #newBuilder()} instead to construct ExternalBeanModuleInstanceFactorys.
+   *
+   * Creates a default ExternalBeanModuleInstanceFactory.
+   *
+   * @return a new ExternalBeanModuleInstanceFactory.
+   */
+  @Deprecated
+  public static ExternalBeanModuleInstanceFactory createExternalBeanModuleInstanceFactory() {
+    return new ExternalBeanModuleInstanceFactory(ExternalBeanModuleInstanceOptionsFactory.newBuilder().build());
+  }
+
+  /**
+   * DEPRECATED. Use {@link #newBuilder()} instead to construct ExternalBeanModuleInstanceFactorys.
+   *
+   * Creates an ExternalBeanModuleInstanceFactory with the given name.
+   *
+   * @param name the name that the ExternalBeanModuleInstanceFactory should use when creating ExternalBeanModuleInstances.
+   * @return a new ExternalBeanModuleInstanceFactory that will generate named ExternalBeanModuleInstances.
+   */
+  @Deprecated
+  public static ExternalBeanModuleInstanceFactory createNamedExternalBeanModuleInstanceFactory(String name) {
+    return new ExternalBeanModuleInstanceFactory(ExternalBeanModuleInstanceOptionsFactory.newBuilder().setName(name).build());
+  }
+
+  /**
+   * Creates a ExternalBeanModuleInstance with this ExternalBeanModuleInstanceFactory's options.
+   *
+   * @return a new ExternalBeanModuleInstance.
+   */
+  @Override
+  public BeanModuleInstance createBeanModuleInstance() {
+    return ExternalBeanModuleInstance.newBuilder().setOptions(beanModuleInstanceOptions).build();
+  }
+
+  /**
+   * Gets the ExternalBeanModuleInstanceOptionsFactory generating the options for this ExternalBeanModuleInstanceFactory.
+   *
+   * @return this ExternalBeanModuleInstanceFactory's ExternalBeanModuleInstanceOptionsFactory.
+   */
+  @Override
+  public BeanModuleInstanceOptionsFactory getBeanModuleInstanceOptionsFactory() {
+    return beanModuleInstanceOptionsFactory;
+  }
+
+  /**
+   * Gets the ExternalBeanModuleInstanceOptions of this ExternalBeanModuleInstanceFactory.
+   *
+   * @return this ExternalBeanModuleInstanceFactory's ExternalBeanModuleInstanceOptions.
+   */
+  @Override
+  public BeanModuleInstanceOptions getBeanModuleInstanceOptions() {
+    return beanModuleInstanceOptions;
+  }
+
+  /**
+   * Sets the ExternalBeanModuleInstanceOptionsFactory for this ExternalBeanModuleInstanceFactory, refreshing the ExternalBeanModuleInstanceOptions.
+   *
+   * @param factory the ExternalBeanModuleInstanceOptionsFactory this ExternalBeanModuleInstanceFactory should use.
+   */
+  @Override
+  public void setBeanModuleInstanceOptionsFactory(BeanModuleInstanceOptionsFactory factory) {
+    beanModuleInstanceOptionsFactory = (ExternalBeanModuleInstanceOptionsFactory) factory;
+    beanModuleInstanceOptions = beanModuleInstanceOptionsFactory.createExternalBeanModuleInstanceOptions();
+  }
+
+  /**
+   * Gets the "user-friendly" name of this ExternalBeanModuleInstanceFactory.
+   *
+   * @return a user-friendly String representing this ExternalBeanModuleInstanceFactory.
+   */
+  @Override
+  public String getExternalBeanModuleInstanceFactoryName() {
+    return "ExternalBeanModuleInstanceFactory (" + beanModuleInstanceOptions.getName() + ")";
+  }
+
+  public static class Builder {
+
+    private ExternalBeanModuleInstanceOptionsFactory optionsFactory;
+
+    public Builder() {
+      optionsFactory = ExternalBeanModuleInstanceOptionsFactory.newBuilder().build();
+    }
+
+    public Builder setOptionsFactory(ExternalBeanModuleInstanceOptionsFactory optionsFactory) {
+      this.optionsFactory = optionsFactory;
+      return this;
+    }
+
+    public ExternalBeanModuleInstanceFactory build() {
+      return new ExternalBeanModuleInstanceFactory(optionsFactory);
+    }
+  }
+}
