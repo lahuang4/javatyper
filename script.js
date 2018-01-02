@@ -13,6 +13,16 @@ $(
 	}
 );
 
+const themes = [{
+	name: 'green',
+	background: '#000000',
+	foreground: '#00FF00'
+}, {
+	name: 'eclipse',
+	background: '#FFFFFF',
+	foreground: '#000000'
+}];
+
 var Typer={
 	text: null,
 	accessCountimer:null,
@@ -21,6 +31,7 @@ var Typer={
 	file:"", //file, must be setted
 	accessCount:0, //times alt is pressed for Access Granted
 	deniedCount:0, //times caps is pressed for Access Denied
+	theme:0, // current theme
 	init: function(){// inizialize Hacker Typer
 		accessCountimer=setInterval(function(){Typer.updLstChr();},500); // inizialize timer for blinking cursor
 		$.get(Typer.file,function(data){// get the text file
@@ -60,6 +71,15 @@ var Typer={
 		$("#deni").remove();
 		$("#gran").remove();
 	},
+
+	toggleTheme:function(){// toggle between the available themes
+		Typer.theme = (Typer.theme + 1) % themes.length;
+		Typer.applyTheme();
+	},
+	applyTheme:function(){// apply the current theme to the page
+		$("body").css("background", themes[Typer.theme].background);
+		$("body").css("color", themes[Typer.theme].foreground);
+	},
 	
 	addText:function(key){//Main function to add the code
 		if(key.keyCode==18){// key 18 = alt key
@@ -74,6 +94,8 @@ var Typer={
 			}
 		}else if(key.keyCode==27){ // key 27 = esc key
 			Typer.hidepop(); // hide all popups
+		}else if(key.keyCode==17){// key 17 = ctrl
+			Typer.toggleTheme();
 		}else if(Typer.text){ // otherway if text is loaded
 			var cont=Typer.content(); // get the console content
 			if(cont.substring(cont.length-1,cont.length)=="|") // if the last char is the blinking cursor

@@ -2,6 +2,10 @@ h2. Java Typer
 
 A verbose Java variant of <a href="https://github.com/duiker101/Hacker-Typer">Hacker-Typer</a>.
 
+h2. Additional Features
+
+Press Ctrl to toggle your theme! In addition to the classic black and green theme, give the Eclipse theme a spin.
+
 h2. License 
 
 (c) Copyright 2011 Simone Masiero. Some Rights Reserved. 
